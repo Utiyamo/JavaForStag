@@ -19,15 +19,15 @@ public class Apartamento {
 		this.residentes = pessoas;
 	}
 	
-	public Apartamento(String andar, String bloco, String predio, String numero, ArrayList<Pessoa>  pessoas) {
+	public Apartamento(String andar, String bloco, String predio, String numero) {
 		this.andar = andar;
 		this.bloco = bloco;
 		this.predio = predio;
 		this.numero = numero;
-		this.residentes = pessoas;
 	}
 	
-	public Apartamento(String andar, String bloco, String predio, String numero) {
+	public Apartamento(int id, String andar, String bloco, String predio, String numero) {
+		this.id =  id;
 		this.andar = andar;
 		this.bloco = bloco;
 		this.predio = predio;

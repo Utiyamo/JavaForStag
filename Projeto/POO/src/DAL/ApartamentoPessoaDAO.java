@@ -4,24 +4,23 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import BD.ConexaoDB;
 import Models.Apartamento;
-import Models.Pessoa;
+import Models.ApartamentoPessoa;
 
-public class ApartamentoDAO extends ConexaoDB  {
-	public void IncluirApartamento(Apartamento apartamento)  {
+public class ApartamentoPessoaDAO extends ConexaoDB  {
+	public void IncluirApartamentoPessoa(ApartamentoPessoa apartamentoPessoa)  {
 		try {
 			openConnection();
-			String sql = "INSERT INTO Apartamento (andar, bloco, predio, numero) VALUES (?,?,?,?)";
+			String sql = "INSERT INTO ApartamentoPessoa (pessoa_id, apartamento_id) VALUES (?,?)";
 			int insertID;
 			PreparedStatement st = con.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-			st.setString(1, apartamento.getAndar());
-			st.setString(2, apartamento.getBloco());
-			st.setString(3, apartamento.getPredio());
-			st.setString(4, apartamento.getNumero());
+			st.setInt(1, apartamentoPessoa.getPessoa_id());
+			st.setInt(2, apartamentoPessoa.getApartamento_id());
 			insertID = st.executeUpdate();
-			apartamento.setId(insertID);
+			apartamentoPessoa.setId(insertID);
 			con.commit();
 			
 		}catch (Exception e) {
@@ -39,24 +38,22 @@ public class ApartamentoDAO extends ConexaoDB  {
 		}	
 	}
 	
-	public Apartamento BuscarApartamento(int id) {
-		Apartamento apartamento;
+	public ArrayList<Integer> BuscarApartamentoPessoa(int apartamento_id) {
 		try {
 			openConnection();
-			String sql = "SELECT * FROM Apartamento a WHERE a.id = ?";			
+			String sql = "SELECT * FROM Apartamento ap WHERE ap.aparamento_id = ?";			
 			PreparedStatement st = con.prepareStatement(sql);
-			st.setInt(1, id);
+			st.setInt(1, apartamento_id);
 			ResultSet resultSet = st.executeQuery();
-			if(resultSet.next()) {
-				apartamento = new Apartamento(
-							resultSet.getInt("id"),
-							resultSet.getString("andar"),
-							resultSet.getString("bloco"),
-							resultSet.getString("predio"),
-							resultSet.getString("numero")
-						);
-				return apartamento;
+			
+			ArrayList<Integer> ids =  new ArrayList<Integer>();
+			
+			while(resultSet.next()) {
+				ids.add(resultSet.getInt("pessoa_id"));
 			}
+			
+			return ids;
+			
 		}catch(SQLException e){
 			e.printStackTrace();
 		}finally {
@@ -64,15 +61,15 @@ public class ApartamentoDAO extends ConexaoDB  {
 		}
 		return null;
 	}
-	
-	public void ExcluirApartamento(int id) {
+
+	public void ExcluirApartamentoPessoaApartamentoId(int apartamento_id) {
 		try {
 			openConnection();
 			
-			String sql = "DELETE Apartamento WHERE id = ?";
+			String sql = "DELETE ApartamentoPessoa ap WHERE ap.apartamento_id = ?";
 			
 			PreparedStatement st = con.prepareStatement(sql);
-			st.setInt(1, id);
+			st.setInt(1, apartamento_id);
 			
 			st.executeUpdate();
 			con.commit();
@@ -91,18 +88,18 @@ public class ApartamentoDAO extends ConexaoDB  {
 		}
 	}
 	
-	public void EditarApartamento(Apartamento apartamento) {
+	public void ExcluirApartamentoPessoaPessoaId(int pessoa_id) {
 		try {
 			openConnection();
-			String sql = "UPDATE Apartamento SET andar= ?, bloco= ?, predio = ?, numero = ? WHERE id = ?";
+			
+			String sql = "DELETE ApartamentoPessoa ap WHERE ap.pessoa_id = ?";
+			
 			PreparedStatement st = con.prepareStatement(sql);
-			st.setString(1, apartamento.getAndar());
-			st.setString(2, apartamento.getBloco());
-			st.setString(3, apartamento.getPredio());
-			st.setString(4, apartamento.getNumero());
+			st.setInt(1, pessoa_id);
+			
 			st.executeUpdate();
 			con.commit();
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			if (con != null) {
 	            try {
 	                con.rollback();
@@ -110,10 +107,12 @@ public class ApartamentoDAO extends ConexaoDB  {
 	               ex.printStackTrace();
 	            }
 	        }
+
 			e.printStackTrace();
 		}finally {
 			closeConnection();
 		}
 	}
+
 }
 

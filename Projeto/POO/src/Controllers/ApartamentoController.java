@@ -1,18 +1,17 @@
 package Controllers;
 
-import java.util.ArrayList;
-
 import javax.swing.JOptionPane;
 
 import DAL.ApartamentoDAO;
+import DAL.PessoaDAO;
 import Models.Apartamento;
 import Models.Pessoa;
 
 public class ApartamentoController {
-	public boolean incluirApartamento (String andar, String bloco, String predio, String numero, ArrayList<Pessoa> moradores) {
+	public boolean incluirApartamento (String andar, String bloco, String predio, String numero) {
 		try {
 			ApartamentoDAO dao = new ApartamentoDAO();
-			Apartamento apartamento = new Apartamento(andar, bloco, predio, numero, moradores);
+			Apartamento apartamento = new Apartamento(andar, bloco, predio, numero);
 			dao.IncluirApartamento(apartamento);
 			return true;
 		}catch (Exception e) {
@@ -21,4 +20,19 @@ public class ApartamentoController {
 		return false;
 	}
 	
+	public Apartamento consultarApartamento(int id) {
+		try {
+			ApartamentoDAO daoApartamento = new ApartamentoDAO();
+			Apartamento apartamento = daoApartamento.BuscarApartamento(id);
+			
+			if (apartamento == null) {
+				return null;
+			} else {
+				return apartamento;
+			}
+			
+		}catch(Exception e){
+			throw e;
+		}
+	}
 }
