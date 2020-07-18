@@ -12,15 +12,23 @@ import javax.swing.JRadioButton;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextPane;
+
+import Controllers.HistoricoES_Controller;
+import Models.Apartamento;
+
 import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JTextArea;
+import javax.swing.SwingConstants;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class HistoricoES {
 
 	private JFrame frame;
 	private JTextField textField;
 	private JTextField textField_1;
+	
 
 	/**
 	 * Launch the application.
@@ -55,6 +63,7 @@ public class HistoricoES {
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
+		HistoricoES_Controller controller = new HistoricoES_Controller();
 		
 		JLabel lblNewLabel = new JLabel("Tipo");
 		lblNewLabel.setBounds(201, 18, 27, 35);
@@ -81,17 +90,23 @@ public class HistoricoES {
 		JComboBox cbAPTO = new JComboBox();
 		cbAPTO.setBounds(40, 65, 365, 21);
 		frame.getContentPane().add(cbAPTO);
-		HistoricoES_Controller controller = new HistoricoES();
-		ArrayList<Apartamento> apartamentos = new ArrayList();
-		= controller.getApartamentos();
+		
+		ArrayList<Apartamento> apartamentos = new ArrayList<Apartamento>();
+		apartamentos = controller.getApartamentos();
 		for(Apartamento apto : apartamentos) {
 			cbAPTO.addItem(apto);
 		}
+		
 		JLabel lblNewLabel_3 = new JLabel("RG");
 		lblNewLabel_3.setBounds(10, 92, 45, 42);
 		frame.getContentPane().add(lblNewLabel_3);
 		
 		JButton btnBuscar = new JButton("Buscar");
+		btnBuscar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
 		btnBuscar.setBounds(318, 103, 85, 21);
 		frame.getContentPane().add(btnBuscar);
 		
@@ -120,6 +135,10 @@ public class HistoricoES {
 		JTextArea textArea = new JTextArea();
 		textArea.setBounds(21, 191, 398, 40);
 		frame.getContentPane().add(textArea);
+		
+		JButton btnNovo = new JButton("Novo");
+		btnNovo.setBounds(320, 143, 85, 21);
+		frame.getContentPane().add(btnNovo);
 	}
 	
 }
